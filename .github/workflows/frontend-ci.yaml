@@ -87,10 +87,20 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            starter/frontend/node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm ci
         working-directory: starter/frontend
 
       - name: Build project
-        run: npm run build
+        run: docker build -t movie-frontend .
         working-directory: starter/frontend
