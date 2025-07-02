@@ -134,7 +134,7 @@ jobs:
           IMAGE_URI=$ECR_REGISTRY/${{ vars.ECR_REPOSITORY_FE }}
           echo "ECR_REGISTRY: $ECR_REGISTRY"
           echo "IMAGE_URI: $IMAGE_URI"
-          docker build --build-arg=REACT_APP_MOVIE_API_URL=http://backend -t $IMAGE_URI:latest -t $IMAGE_URI:$SHA_SHORT .
+          docker build --build-arg=REACT_APP_MOVIE_API_URL=http://backend:5000 -t $IMAGE_URI:latest -t $IMAGE_URI:$SHA_SHORT .
           docker push $IMAGE_URI:latest
           docker push $IMAGE_URI:$SHA_SHORT
         working-directory: starter/frontend
