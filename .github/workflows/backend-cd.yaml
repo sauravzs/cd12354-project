@@ -135,5 +135,5 @@ jobs:
       - name: Deploy to EKS
         run: |
           kubectl set image deployment/backend backend=$ECR_REGISTRY/${{ vars.ECR_REPOSITORY_FE }}:latest --namespace ${{ vars.KUBE_NAMESPACE }}
-          kubectl rollout status deployment/backend --namespace ${{ vars.KUBE_NAMESPACE }}
+          kubectl rollout status deployment/backend --namespace ${{ vars.KUBE_NAMESPACE }} --timeout=1m
         working-directory: starter/backend
