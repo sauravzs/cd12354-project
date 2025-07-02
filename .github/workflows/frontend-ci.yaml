@@ -27,10 +27,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        working-directory: starter/frontend
 
       - name: Run linting
         run: npm run lint
         continue-on-error: false
+        working-directory: starter/frontend
 
   test:
     runs-on: ubuntu-latest
@@ -46,10 +48,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        working-directory: starter/frontend
 
       - name: Run tests
         run: CI=true npm run test
         continue-on-error: false
+        working-directory: starter/frontend
   
   build:
     runs-on: ubuntu-latest
@@ -65,6 +69,8 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        working-directory: starter/frontend
 
       - name: Build project
         run: npm run build
+        working-directory: starter/frontend
