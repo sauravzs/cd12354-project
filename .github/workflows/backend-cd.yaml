@@ -128,9 +128,9 @@ jobs:
       
       - name: Apply manifests
         run: |
-          kubectl apply -f deployment.yml
-          kubectl apply -f service.yml
-        working-directory: starter/backend/k8s
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+        working-directory: starter/backend
       
       - name: Deploy to EKS
         run: |
