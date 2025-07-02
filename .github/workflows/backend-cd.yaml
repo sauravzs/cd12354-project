@@ -2,6 +2,7 @@ name: Backend Continuous Deployment
 
 env:
   PYTHON_VERSION: '3.10'
+  KUBECONFIG: ${{ github.workspace }}/starter/backend/kubeconfig
 
 on:
   workflow_dispatch:
@@ -125,8 +126,14 @@ jobs:
           kubectl config use-context arn:aws:eks:${{ vars.AWS_REGION }}:038713363621:cluster/saurav-eks
         working-directory: starter/backend
       
+      - name: Apply manifests
+        run: |
+          kubectl apply -f deployment.yml
+          kubectl apply -f service.yml
+        working-directory: starter/backend/k8s
+      
       - name: Deploy to EKS
         run: |
-          kubectl set image deployment/my-app my-container=$ECR_REGISTRY/${{ vars.ECR_REPOSITORY_BE }}:$SHA_SHORT --namespace ${{ vars.KUBE_NAMESPACE }}
-          kubectl rollout status deployment/my-app --namespace ${{ vars.KUBE_NAMESPACE }}
+          kubectl set image deployment/backend backend=$ECR_REGISTRY/${{ vars.ECR_REPOSITORY_FE }}:latest --namespace ${{ vars.KUBE_NAMESPACE }}
+          kubectl rollout status deployment/backend --namespace ${{ vars.KUBE_NAMESPACE }}
         working-directory: starter/backend
