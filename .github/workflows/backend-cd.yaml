@@ -119,8 +119,9 @@ jobs:
       
       - name: Configure kubeconfig
         run: |
-          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > kubeconfig
+          aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ CLUSTER_NAME }} --kubeconfig $PWD/kubeconfig
           export KUBECONFIG=$PWD/kubeconfig
+          kubectl config current-context
           kubectl config use-context arn:aws:eks:${{ vars.AWS_REGION }}:038713363621:cluster/saurav-eks
         working-directory: starter/backend
       

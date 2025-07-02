@@ -133,9 +133,9 @@ jobs:
           IMAGE_URI=$ECR_REGISTRY/${{ vars.ECR_REPOSITORY_FE }}
           echo "ECR_REGISTRY: $ECR_REGISTRY"
           echo "IMAGE_URI: $IMAGE_URI"
-          docker build -t movie-project/frontend:latest -t movie-project/frontend:$SHA_SHORT .
-          docker push 038713363621.dkr.ecr.us-east-1.amazonaws.com/movie-project/frontend:latest
-          docker push 038713363621.dkr.ecr.us-east-1.amazonaws.com/movie-project/frontend:$SHA_SHORT
+          docker build -t $IMAGE_URI:latest -t $IMAGE_URI:$SHA_SHORT .
+          docker push $IMAGE_URI:latest
+          docker push $IMAGE_URI:$SHA_SHORT
         working-directory: starter/frontend
       
       - name: Set up kubectl
@@ -143,8 +143,9 @@ jobs:
       
       - name: Configure kubeconfig
         run: |
-          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > kubeconfig
+          aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ CLUSTER_NAME }} --kubeconfig $PWD/kubeconfig
           export KUBECONFIG=$PWD/kubeconfig
+          kubectl config current-context
           kubectl config use-context arn:aws:eks:${{ vars.AWS_REGION }}:038713363621:cluster/saurav-eks
         working-directory: starter/frontend
       
